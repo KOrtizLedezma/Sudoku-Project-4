@@ -3,7 +3,6 @@ import sys
 
 
 def draw_menu(screen1):
-
     button_width = 150
     button_height = 50
 
@@ -178,5 +177,4 @@ if __name__ == "__main__":
 
     background_image = pygame.image.load('Media/background.png')
     screen.blit(background_image, (0, 0))
-
     draw_menu(screen)
