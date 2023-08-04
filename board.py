@@ -11,6 +11,8 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
         self.current_selected = None
+        self.cells = []
+
 
 
 
@@ -25,9 +27,24 @@ class Board:
 
         pygame.draw.rect(self.screen, (0, 0, 0),
                          ((4 * 80 -22), (1 * 80 -5), 6, 675))
-
         pygame.draw.rect(self.screen, (0, 0, 0),
                          ((7 * 80 - 38), (1 * 80 - 5), 6, 675))
+        pygame.draw.rect(self.screen, (0, 0, 0),
+                         ((1 * 60 + 75 - 3), (1 * 60), 6, 540))
+        pygame.draw.rect(self.screen, (0, 0, 0),
+                         ((4 * 60 + 75 - 3), (1 * 60), 6, 540))
+        pygame.draw.rect(self.screen, (0, 0, 0),
+                         ((7 * 60 + 75 - 3), (1 * 60), 6, 540))
+        pygame.draw.rect(self.screen, (0, 0, 0),
+                         ((10 * 60 + 75 - 3), (1 * 60), 6, 540))
+        pygame.draw.rect(self.screen, (0, 0, 0),
+                         ((1 * 60 + 75), (1 * 60 - 3), 540, 6))
+        pygame.draw.rect(self.screen, (0, 0, 0),
+                         ((1 * 60 + 75), (4 * 60 - 3), 540, 6))
+        pygame.draw.rect(self.screen, (0, 0, 0),
+                         ((1 * 60 + 75), (7 * 60 - 3), 540, 6))
+        pygame.draw.rect(self.screen, (0, 0, 0),
+                         ((1 * 60 + 75), (10 * 60 - 3), 540, 6))
 
 
     # Marks the cell at (row, col) in the board as the current selected cell.
@@ -47,12 +64,22 @@ class Board:
     # Clears the value cell. Note that the user can only remove the cell values and sketched value that are
     # filled by themselves.
     def clear(self, value):
-        pass
+        if self.current_selected is not None:
+            row, col = self.current_selected
+            cell = self.cells[row][col]
+            if cell.value == value:
+                cell.set_cell_value(None)
+                cell.set_sketched_value(None)
+                cell.draw()
 
     # Sets the sketched value of the current selected cell equal to user entered value.
     # It will be displayed at the top left corner of the cell using the draw() function.
     def sketch(self, value):
-        pass
+        if self.current_selected is not None:
+            row, col = self.current_selected
+            cell = self.cells[row][col]
+            cell.set_sketched_value(value)
+            cell.draw()
 
     # Sets the value of the current selected cell equal to user entered value.
     # Called when the user presses the Enter key.
