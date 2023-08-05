@@ -20,7 +20,8 @@ class Board:
     def draw(self):
         for row in range(9):
             for col in range(9):
-                cell = Cell('0', row + 1, col + 1, self.screen)
+                cell = Cell('0', row + 1, col + 1, self.screen, False)
+                self.cells.append(cell)
                 cell.draw()
 
         pygame.draw.rect(self.screen, (0, 0, 0),
@@ -30,7 +31,7 @@ class Board:
         pygame.draw.rect(self.screen, (0, 0, 0),
                          ((7 * 60 + 75 - 3), (1 * 60), 6, 540))
         pygame.draw.rect(self.screen, (0, 0, 0),
-                         ((10 * 60 + 75 - 3), (1 * 60), 6, 540))
+                         ((10 * 60 + 75 - 3), (1 * 60 - 3), 6, 546))
         pygame.draw.rect(self.screen, (0, 0, 0),
                          ((1 * 60 + 75), (1 * 60 - 3), 540, 6))
         pygame.draw.rect(self.screen, (0, 0, 0),
