@@ -107,8 +107,8 @@ class Board:
         for row in range(self.height):
             for col in range(self.width):
                 cell = board[row][col]
-                if cell == 0:  # should I be comparing cell to 0 or call a funtion from Cell class
-                    count += 1  # where to get value of that function
+                if cell == 0:
+                    count += 1
         if count == 0:
             return True
 
@@ -135,4 +135,21 @@ class Board:
 
     # Check whether the Sudoku board is solved correctly.
     def check_board(self):
+        board = SudokuGenerator.get_board()
+        for row in board:
+            for i in range(len(row)):
+                check = row.remove(i)
+                if i in check:
+                    return False
+        col = []
+        count = 0
+        for row in board:
+            col.append(row[count])
+            check = col.remove(row[count])      # not correct
+            for i in range(self.width):
+                if i in check:
+                    return False
+
+
+
         pass
