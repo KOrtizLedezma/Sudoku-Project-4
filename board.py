@@ -1,5 +1,6 @@
 import pygame
 from cell import Cell
+from sudoku_generator import SudokuGenerator
 
 
 class Board:
@@ -78,25 +79,28 @@ class Board:
     # Sets the value of the current selected cell equal to user entered value.
     # Called when the user presses the Enter key.
     def place_number(self, value):
+        board = SudokuGenerator.get_board()
         row, col = self.current_selected
-        cell = self.board[row][col]
+        cell = board[row][col]
         cell.set_cell_value(value)
 
     # Reset all cells in the board to their original values (0 if cleared, otherwise the corresponding digit)
     def reset_to_original(self):
+        board = SudokuGenerator.get_board()
         for row in range(self.height):
             for col in range(self.width):
-                cell = self.board[row][col]
+                cell = board[row][col]
                 # cell.
                 # where to find original value
         pass
 
     # Returns a Boolean value indicating whether the board is full or not.
     def is_full(self):
+        board = SudokuGenerator.get_board()
         count = 0
         for row in range(self.height):
             for col in range(self.width):
-                cell = self.board[row][col]
+                cell = board[row][col]
                 if cell == 0:  # should I be comparing cell to 0 or call a funtion from Cell class
                     count += 1  # where to get value of that function
         if count == 0:
@@ -106,17 +110,19 @@ class Board:
 
     # Updates the underlying 2D board with the values in all cells.
     def update_board(self):
+        board = SudokuGenerator.get_board()
         for row in range(self.height):
             for col in range(self.width):
-                cell = self.board[row][col]
+                cell = board[row][col]
                 cell.set_cell_value()
         pass
 
     # Finds an empty cell and returns its row and col as a tuple
     def find_empty(self):
+        board = SudokuGenerator.get_board()
         for row in range(self.height):
             for col in range(self.width):
-                cell = self.board[row][col]
+                cell = board[row][col]
                 if cell == 0:
                     return row, col
         pass
