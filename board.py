@@ -1,10 +1,12 @@
 import pygame
 from cell import Cell
+
+
 class Board:
 
     # Constructor for the Board class.
-    # screen is a window from PyGame.
-    # difficulty is a variable to indicate if the user chose easy, medium, or hard
+    # Screen is a window from PyGame.
+    # Difficulty is a variable to indicate if the user chose easy, medium, or hard
     def __init__(self, width, height, screen, difficulty):
         self.width = width
         self.height = height
@@ -13,24 +15,16 @@ class Board:
         self.current_selected = None
         self.cells = []
 
-
-
-
     # Draws an outline of the Sudoku grid, with bold lines to delineate the 3x3 boxes.
     # Draws every cell on this board.
-
     def draw(self):
         for row in range(9):
             for col in range(9):
-                cell = Cell(None, row+1, col+1, self.screen, None)
+                cell = Cell('0', row + 1, col + 1, self.screen)
                 cell.draw()
 
         pygame.draw.rect(self.screen, (0, 0, 0),
-                         ((4 * 80 -22), (1 * 80 -5), 6, 675))
-        pygame.draw.rect(self.screen, (0, 0, 0),
-                         ((7 * 80 - 38), (1 * 80 - 5), 6, 675))
-        pygame.draw.rect(self.screen, (0, 0, 0),
-                         ((1 * 60 + 75 - 3), (1 * 60), 6, 540))
+                         ((1 * 60 + 75), (1 * 60), 6, 540))
         pygame.draw.rect(self.screen, (0, 0, 0),
                          ((4 * 60 + 75 - 3), (1 * 60), 6, 540))
         pygame.draw.rect(self.screen, (0, 0, 0),
@@ -45,7 +39,6 @@ class Board:
                          ((1 * 60 + 75), (7 * 60 - 3), 540, 6))
         pygame.draw.rect(self.screen, (0, 0, 0),
                          ((1 * 60 + 75), (10 * 60 - 3), 540, 6))
-
 
     # Marks the cell at (row, col) in the board as the current selected cell.
     # Once a cell has been selected, the user can edit its value or sketched value.
@@ -72,8 +65,8 @@ class Board:
                 cell.set_sketched_value(None)
                 cell.draw()
 
-    # Sets the sketched value of the current selected cell equal to user entered value.
-    # It will be displayed at the top left corner of the cell using the draw() function.
+    # Sets the sketched value of the current selected cell equal to user-entered value.
+    # It will be displayed in the top left corner of the cell using the draw() function.
     def sketch(self, value):
         if self.current_selected is not None:
             row, col = self.current_selected
@@ -93,8 +86,8 @@ class Board:
         for row in range(self.height):
             for col in range(self.width):
                 cell = self.board[row][col]
-                cell.
-                # where to find origional value
+                # cell.
+                # where to find original value
         pass
 
     # Returns a Boolean value indicating whether the board is full or not.
@@ -103,11 +96,10 @@ class Board:
         for row in range(self.height):
             for col in range(self.width):
                 cell = self.board[row][col]
-                if cell == 0:       #should I be comparing cell to 0 or call a funtion from Cell class
-                    count += 1      #where to get value of that function
+                if cell == 0:  # should I be comparing cell to 0 or call a funtion from Cell class
+                    count += 1  # where to get value of that function
         if count == 0:
             return True
-
 
         pass
 

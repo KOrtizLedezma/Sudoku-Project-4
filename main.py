@@ -1,7 +1,10 @@
 import pygame
 import sys
 
+import board
 
+
+# Draws the Menu with all the buttons and deals with clicks
 def draw_menu(screen1):
     button_width = 150
     button_height = 50
@@ -49,16 +52,14 @@ def draw_menu(screen1):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_easy.collidepoint(event.pos):
                     draw_game(difficulty='EASY')
-                    print('Easy')
                 elif button_medium.collidepoint(event.pos):
                     draw_game(difficulty='MEDIUM')
-                    print('Medium')
                 elif button_hard.collidepoint(event.pos):
                     draw_game(difficulty='HARD')
-                    print('Hard')
         pygame.display.update()
 
 
+# Draws the game screen including the board and buttons, deals with clicks of the buttons
 def draw_game(difficulty):
     pygame.init()
     game_screen = pygame.display.set_mode((800, 800))
@@ -89,6 +90,9 @@ def draw_game(difficulty):
     game_screen.blit(button_restart_text, text_restart)
     game_screen.blit(button_exit_text, text_exit)
 
+    board1 = board.Board(800, 800, game_screen, difficulty)
+    board1.draw()
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -103,6 +107,7 @@ def draw_game(difficulty):
         pygame.display.update()
 
 
+# Draws the Winning screen
 def draw_win():
     pygame.init()
     win_screen = pygame.display.set_mode((800, 800))
@@ -169,6 +174,7 @@ def draw_lose():
         pygame.display.update()
 
 
+# Runs the program
 if __name__ == "__main__":
     state = False
     pygame.init()
