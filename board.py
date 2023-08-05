@@ -44,37 +44,43 @@ class Board:
 
     # Marks the cell at (row, col) in the board as the current selected cell.
     # Once a cell has been selected, the user can edit its value or sketched value.
-    def select(self, row, col):
-        self.current_selected = (row, col)
+    def select(self, x, y):
+        clicked_cell = self.click(x, y)
+        if clicked_cell is not None:
+            row, col = clicked_cell
+            self.current_selected = (row, col)
 
     # If a tuple of (x, y) coordinates is within the displayed board, this function returns a tuple of the (row, col)
     # of the cell which was clicked. Otherwise, this function returns None.
     def click(self, x, y):
-        cell_size = 100
-        row, col = y // cell_size, x // cell_size
-        if row < self.height and col < self.width:
+        cell_size = 60
+        row, col = y // cell_size, (x - 75) // cell_size
+        if 0 <= row < self.height and 0 <= col < self.width:
             return row, col
         return None
 
+
     # Clears the value cell. Note that the user can only remove the cell values and sketched value that are
     # filled by themselves.
-    def clear(self, value):
+    def clear(self):
         if self.current_selected is not None:
             row, col = self.current_selected
-            cell = self.cells[row][col]
-            if cell.value == value:
-                cell.set_cell_value(None)
-                cell.set_sketched_value(None)
+            cell = self.cells[row * self.width + col]
+            if cell.value != '0':
+                cell.set_cell_value('0')
+                cell.set_sketched_value('0')
                 cell.draw()
+
 
     # Sets the sketched value of the current selected cell equal to user-entered value.
     # It will be displayed in the top left corner of the cell using the draw() function.
-    def sketch(self, value):
+    def sketch(self):
         if self.current_selected is not None:
             row, col = self.current_selected
-            cell = self.cells[row][col]
-            cell.set_sketched_value(value)
+            cell = self.cells[row * self.width + col]
+            cell.set_sketched_value('0')
             cell.draw()
+
 
     # Sets the value of the current selected cell equal to user entered value.
     # Called when the user presses the Enter key.
