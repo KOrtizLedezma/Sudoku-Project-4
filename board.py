@@ -8,12 +8,13 @@ class Board:
     # Constructor for the Board class.
     # Screen is a window from PyGame.
     # Difficulty is a variable to indicate if the user chose easy, medium, or hard
-    def __init__(self, width, height, screen, difficulty):
+    def __init__(self, width, height, screen, difficulty, board):
         self.width = width
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
         self.current_selected = None
+        self.board = board
         self.cells = []
 
     # Draws an outline of the Sudoku grid, with bold lines to delineate the 3x3 boxes.
@@ -21,7 +22,7 @@ class Board:
     def draw(self):
         for row in range(9):
             for col in range(9):
-                cell = Cell('0', row + 1, col + 1, self.screen, False)
+                cell = Cell(str(self.board[row][col]), row + 1, col + 1, self.screen, False)
                 self.cells.append(cell)
                 cell.draw()
 
@@ -59,8 +60,7 @@ class Board:
             return row, col
         return None
 
-
-    # Clears the value cell. Note that the user can only remove the cell values and sketched value that are
+    # Clears the value cell.Note that the user can only remove the cell values and sketched value that are
     # filled by themselves.
     def clear(self):
         if self.current_selected is not None:
@@ -71,7 +71,6 @@ class Board:
                 cell.set_sketched_value('0')
                 cell.draw()
 
-
     # Sets the sketched value of the current selected cell equal to user-entered value.
     # It will be displayed in the top left corner of the cell using the draw() function.
     def sketch(self):
@@ -81,8 +80,7 @@ class Board:
             cell.set_sketched_value('0')
             cell.draw()
 
-
-    # Sets the value of the current selected cell equal to user entered value.
+    # Sets the value of the current selected cell equal to the user entered value.
     # Called when the user presses the Enter key.
     def place_number(self, value):
         board = SudokuGenerator.get_board()
@@ -145,12 +143,10 @@ class Board:
         count = 0
         for row in board:
             col.append(row[count])
-            check = col.remove(row[count]) # ?
+            check = col.remove(row[count])  # ?
             for i in col:
                 if i in check:
                     return False
             count += 1
-
-
 
         pass

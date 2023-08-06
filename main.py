@@ -1,7 +1,7 @@
 import pygame
 import sys
-
 import board
+import sudoku_generator
 
 
 # Draws the Menu with all the buttons and deals with clicks
@@ -90,8 +90,18 @@ def draw_game(difficulty):
     game_screen.blit(button_restart_text, text_restart)
     game_screen.blit(button_exit_text, text_exit)
 
-    board1 = board.Board(800, 800, game_screen, difficulty)
-    board1.draw()
+    if difficulty == 'EASY':
+        sudoku = sudoku_generator.generate_sudoku(9, 30)
+        board1 = board.Board(800, 800, game_screen, difficulty, sudoku)
+        board1.draw()
+    elif difficulty == 'MEDIUM':
+        sudoku = sudoku_generator.generate_sudoku(9, 40)
+        board1 = board.Board(800, 800, game_screen, difficulty, sudoku)
+        board1.draw()
+    if difficulty == 'HARD':
+        sudoku = sudoku_generator.generate_sudoku(9, 50)
+        board1 = board.Board(800, 800, game_screen, difficulty, sudoku)
+        board1.draw()
 
     while True:
         for event in pygame.event.get():
