@@ -54,7 +54,8 @@ class SudokuGenerator:
     # num is the value we are looking for in the column
     # Return: boolean
     def valid_in_col(self, col, num):
-        for col_num in self.board[:][col]:
+        for row in range(len(self.board)):
+            col_num = self.board[row][col]
             if num == col_num:
                 return False
         return True
@@ -69,11 +70,9 @@ class SudokuGenerator:
     # Return: boolean
 
     def valid_in_box(self, row_start, col_start, num):
-        row_start = row_start - (row_start % 3)
-        col_start = col_start - (col_start % 3)
-        for cell_num in range(row_start, row_start + 2):
-            for col_num in range(col_start, col_start + 2):
-                if col_num == num:
+        for row in range(row_start, row_start + 1):
+            for col in range(col_start, col_start + 1):
+                if self.board[row][col] == num:
                     return False
         return True
 
