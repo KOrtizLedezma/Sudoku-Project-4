@@ -91,29 +91,47 @@ def draw_game(difficulty):
     game_screen.blit(button_exit_text, text_exit)
 
     sudoku_class = sudoku_generator
-    solved_board = sudoku_class.board1
-
     board1 = None
 
     if difficulty == 'EASY':
-        sudoku = sudoku_class.generate_sudoku(9, 30)
-        print(sudoku)
+        sudoku = sudoku_class.generate_sudoku(9, 10)
+        solved_board = sudoku_class.board1
         board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board)
         board1.draw()
     elif difficulty == 'MEDIUM':
         sudoku = sudoku_class.generate_sudoku(9, 40)
+        solved_board = sudoku_class.board1
         board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board)
         board1.draw()
     if difficulty == 'HARD':
         sudoku = sudoku_class.generate_sudoku(9, 50)
+        solved_board = sudoku_class.board1
         board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board)
         board1.draw()
 
     while True:
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+                x, y = pygame.mouse.get_pos()
+                if board1.select(x, y) is not None:
+                    row, col = board1.select(x, y)
+
+                    if board1.bool_board[col][row] != 0:
+                        mark_cell(game_screen, col, row)
+                        value = wait_for_key()
+                        board1.board_to_edit[col][row] = value
+                        board1.draw()
+
+                        if board1.is_full():
+                            if board1.check_board():
+                                draw_win()
+                            else:
+                                draw_lose(difficulty)
+
                 if button_reset.collidepoint(event.pos):
                     board1.reset_to_original()
                 elif button_restart.collidepoint(event.pos):
@@ -163,7 +181,7 @@ def draw_win():
         pygame.display.update()
 
 
-def draw_lose():
+def draw_lose(difficulty):
     pygame.init()
     lose_screen = pygame.display.set_mode((800, 800))
     pygame.display.set_caption('Sudoku')
@@ -187,13 +205,57 @@ def draw_lose():
     lose_screen.blit(button_restart_text, text_restart)
 
     while True:
+        for event1 in pygame.event.get():
+            if event1.type == pygame.QUIT:
+                sys.exit()
+            if event1.type == pygame.MOUSEBUTTONDOWN:
+                draw_game(difficulty)
+        pygame.display.update()
+
+
+def mark_cell(screen1, row, col):
+    # Left Border
+    pygame.draw.rect(screen1, (255, 0, 0),
+                     (((row + 1) * 60 + 75), ((col + 1) * 60), 2, 60))
+    # Upper Border
+    pygame.draw.rect(screen1, (255, 0, 0),
+                     (((row + 1) * 60 + 75), ((col + 1) * 60), 60, 2))
+    # Right Border
+    pygame.draw.rect(screen1, (255, 0, 0),
+                     (((row + 1) * 60 + 75) + 60 - 2, ((col + 1) * 60), 2, 60))
+    # Bottom Border
+    pygame.draw.rect(screen1, (255, 0, 0),
+                     (((row + 1) * 60 + 75), ((col + 1) * 60) + 60 - 2, 60, 2))
+
+
+def unmarked_cell(screen1, row, col):
+    # Left Border
+    pygame.draw.rect(screen1, (128, 128, 128),
+                     (((row + 1) * 60 + 75), ((col + 1) * 60), 2, 60))
+    # Upper Border
+    pygame.draw.rect(screen1, (128, 128, 128),
+                     (((row + 1) * 60 + 75), ((col + 1) * 60), 60, 2))
+    # Right Border
+    pygame.draw.rect(screen1, (128, 128, 128),
+                     (((row + 1) * 60 + 75) + 60 - 2, ((col + 1) * 60), 2, 60))
+    # Bottom Border
+    pygame.draw.rect(screen1, (128, 128, 128),
+                     (((row + 1) * 60 + 75), ((col + 1) * 60) + 60 - 2, 60, 2))
+
+
+def wait_for_key():
+    waiting = True
+    num = 0
+
+    while waiting:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if button_restart.collidepoint(event.pos):
-                    sys.exit()
-        pygame.display.update()
+                waiting = False
+            elif event.type == pygame.KEYDOWN and pygame.K_1 <= event.key <= pygame.K_9:
+                num = event.key - pygame.K_0
+                waiting = False
+
+    return num
 
 
 # Runs the program

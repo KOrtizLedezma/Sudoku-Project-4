@@ -25,7 +25,7 @@ class Board:
     def draw(self):
         for row in range(9):
             for col in range(9):
-                cell = Cell(str(self.board[row][col]), row + 1, col + 1, self.screen, False)
+                cell = Cell(str(self.board[row][col]), col + 1, row + 1, self.screen, False)
                 cell.draw()
 
         pygame.draw.rect(self.screen, (0, 0, 0),
@@ -45,35 +45,29 @@ class Board:
         pygame.draw.rect(self.screen, (0, 0, 0),
                          ((1 * 60 + 75), (10 * 60 - 3), 540, 6))
 
-
     # Marks the cell at (row, col) in the board as the current selected cell.
     # Once a cell has been selected, the user can edit its value or sketched value.
-    def select(self):
-        row, col = self.click()
-        if row is not None and col is not None:
-            return row, col
-        return None
+    # def select(self, x, y):
+    #     row, col = self.click(x, y)
+    #     if row is not None and col is not None:
+    #         return row, col
+    #     return None
 
     # If a tuple of (x, y) coordinates is within the displayed board, this function returns a tuple of the (row, col)
     # of the cell which was clicked. Otherwise, this function returns None.
     @staticmethod
-    def click():
-        x, y = 0, 0
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
-            if 75 <= x <= 615 and 75 <= y <= 615:
-                row = (x - 75) / 80
-                col = (y - 75) / 80
-                return row, col
-            else:
-                return None
+    def select(x, y):
+        if 140 <= x <= 670 and 65 <= y <= 595:
+            row = ((x - 140) // 60)
+            col = ((y - 65) // 60)
+            return row, col
+        else:
+            return None
 
     def clear(self):
         row, col = self.select()
         if self.bool_board[row][col] == 1:
             self.board[row][col] = 0
-
 
     # Sets the sketched value of the current selected cell equal to user-entered value.
     # It will be displayed in the top left corner of the cell using the draw() function.
@@ -82,7 +76,6 @@ class Board:
             row, col = self.select()
             sketched_value = input()
             self.sketch_board[row][col] = sketched_value
-
 
     # Sets the value of the current selected cell equal to the user entered value.
     # Called when the user presses the Enter key.
@@ -135,5 +128,3 @@ class Board:
                 else:
                     bool_list[row][col] = 1
         return bool_list
-
-
