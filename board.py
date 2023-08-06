@@ -8,14 +8,17 @@ class Board:
     # Constructor for the Board class.
     # Screen is a window from PyGame.
     # Difficulty is a variable to indicate if the user chose easy, medium, or hard
-    def __init__(self, width, height, screen, difficulty, board):
+    def __init__(self, width, height, screen, difficulty, board, board_to_edit, solved_board):
         self.width = width
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
         self.current_selected = None
         self.board = board
-        self.cells = []
+        self.bool_board = self.generate_bool_list()
+        self.sketch_board = [[0 for _ in range(9)] for _ in range(9)]
+        self.board_to_edit = board_to_edit
+        self.solved_board = solved_board
 
     # Draws an outline of the Sudoku grid, with bold lines to delineate the 3x3 boxes.
     # Draws every cell on this board.
@@ -23,7 +26,6 @@ class Board:
         for row in range(9):
             for col in range(9):
                 cell = Cell(str(self.board[row][col]), row + 1, col + 1, self.screen, False)
-                self.cells.append(cell)
                 cell.draw()
 
         pygame.draw.rect(self.screen, (0, 0, 0),
@@ -43,42 +45,44 @@ class Board:
         pygame.draw.rect(self.screen, (0, 0, 0),
                          ((1 * 60 + 75), (10 * 60 - 3), 540, 6))
 
+
     # Marks the cell at (row, col) in the board as the current selected cell.
     # Once a cell has been selected, the user can edit its value or sketched value.
-    def select(self, x, y):
-        clicked_cell = self.click(x, y)
-        if clicked_cell is not None:
-            row, col = clicked_cell
-            self.current_selected = (row, col)
-
-    # If a tuple of (x, y) coordinates is within the displayed board, this function returns a tuple of the (row, col)
-    # of the cell which was clicked. Otherwise, this function returns None.
-    def click(self, x, y):
-        cell_size = 60
-        row, col = y // cell_size, (x - 75) // cell_size
-        if 0 <= row < self.height and 0 <= col < self.width:
+    def select(self):
+        row, col = self.click()
+        if row is not None and col is not None:
             return row, col
         return None
 
-    # Clears the value cell.Note that the user can only remove the cell values and sketched value that are
-    # filled by themselves.
+    # If a tuple of (x, y) coordinates is within the displayed board, this function returns a tuple of the (row, col)
+    # of the cell which was clicked. Otherwise, this function returns None.
+    @staticmethod
+    def click():
+        x, y = 0, 0
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+            if 75 <= x <= 615 and 75 <= y <= 615:
+                row = (x - 75) / 80
+                col = (y - 75) / 80
+                return row, col
+            else:
+                return None
+
     def clear(self):
-        if self.current_selected is not None:
-            row, col = self.current_selected
-            cell = self.cells[row * self.width + col]
-            if cell.value != '0':
-                cell.set_cell_value('0')
-                cell.set_sketched_value('0')
-                cell.draw()
+        row, col = self.select()
+        if self.bool_board[row][col] == 1:
+            self.board[row][col] = 0
+
 
     # Sets the sketched value of the current selected cell equal to user-entered value.
     # It will be displayed in the top left corner of the cell using the draw() function.
     def sketch(self):
-        if self.current_selected is not None:
-            row, col = self.current_selected
-            cell = self.cells[row * self.width + col]
-            cell.set_sketched_value('0')
-            cell.draw()
+        if self.select() is not None:
+            row, col = self.select()
+            sketched_value = input()
+            self.sketch_board[row][col] = sketched_value
+
 
     # Sets the value of the current selected cell equal to the user entered value.
     # Called when the user presses the Enter key.
