@@ -90,17 +90,23 @@ def draw_game(difficulty):
     game_screen.blit(button_restart_text, text_restart)
     game_screen.blit(button_exit_text, text_exit)
 
+    sudoku_class = sudoku_generator
+    solved_board = sudoku_class.board1
+
+    board1 = None
+
     if difficulty == 'EASY':
-        sudoku = sudoku_generator.generate_sudoku(9, 30)
-        board1 = board.Board(800, 800, game_screen, difficulty, sudoku)
+        sudoku = sudoku_class.generate_sudoku(9, 30)
+        print(sudoku)
+        board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board)
         board1.draw()
     elif difficulty == 'MEDIUM':
-        sudoku = sudoku_generator.generate_sudoku(9, 40)
-        board1 = board.Board(800, 800, game_screen, difficulty, sudoku)
+        sudoku = sudoku_class.generate_sudoku(9, 40)
+        board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board)
         board1.draw()
     if difficulty == 'HARD':
-        sudoku = sudoku_generator.generate_sudoku(9, 50)
-        board1 = board.Board(800, 800, game_screen, difficulty, sudoku)
+        sudoku = sudoku_class.generate_sudoku(9, 50)
+        board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board)
         board1.draw()
 
     while True:
@@ -109,9 +115,15 @@ def draw_game(difficulty):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_reset.collidepoint(event.pos):
-                    pass
+                    board1.reset_to_original()
                 elif button_restart.collidepoint(event.pos):
-                    pass
+                    if __name__ == "__main__":
+                        pygame.init()
+                        screen_new = pygame.display.set_mode((800, 800))
+                        pygame.display.set_caption('Sudoku')
+                        background_image_new = pygame.image.load('Media/background.png')
+                        screen_new.blit(background_image_new, (0, 0))
+                        draw_menu(screen_new)
                 elif button_exit.collidepoint(event.pos):
                     sys.exit()
         pygame.display.update()

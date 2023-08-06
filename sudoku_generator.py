@@ -1,6 +1,6 @@
 import math
 import random
-
+board1 = None
 
 class SudokuGenerator:
     # create a sudoku board - initialize class variables and set up the 2D board
@@ -203,9 +203,12 @@ class SudokuGenerator:
 # Return: list[list] (a 2D Python list to represent the board)
 
 def generate_sudoku(size, removed):
+    global board1
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
     board = sudoku.get_board()
+    board1 = board
+    print(board1)
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
