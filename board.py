@@ -132,3 +132,4 @@ class Board:
                     bool_list[row][col] = 1
         return bool_list
 
+
