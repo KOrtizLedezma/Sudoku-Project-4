@@ -83,70 +83,52 @@ class Board:
     # Sets the value of the current selected cell equal to the user entered value.
     # Called when the user presses the Enter key.
     def place_number(self, value):
-        board = SudokuGenerator.get_board()
-        row, col = self.current_selected
-        cell = board[row][col]
-        cell.set_cell_value(value)
+        if self.select() is not None:
+            row, col = self.select()
+            if self.board_to_edit[row][col] == 0:
+                self.board_to_edit[row][col] = value
 
     # Reset all cells in the board to their original values (0 if cleared, otherwise the corresponding digit)
     def reset_to_original(self):
-        board = SudokuGenerator.get_board()
-        for row in range(self.height):
-            for col in range(self.width):
-                cell = board[row][col]
-                # cell.
-                # where to find original value
-        pass
+        for row in range(9):
+            for col in range(9):
+                self.board_to_edit[row][col] = self.board[row][col]
 
     # Returns a Boolean value indicating whether the board is full or not.
     def is_full(self):
-        board = SudokuGenerator.get_board()
-        count = 0
-        for row in range(self.height):
-            for col in range(self.width):
-                cell = board[row][col]
-                if cell == 0:
-                    count += 1
-        if count == 0:
-            return True
-
-        pass
+        for row in range(9):
+            for col in range(9):
+                if self.board_to_edit[row][col] == 0:
+                    return False
+        return True
 
     # Updates the underlying 2D board with the values in all cells.
-    def update_board(self):
-        board = SudokuGenerator.get_board()
-        for row in range(self.height):
-            for col in range(self.width):
-                cell = board[row][col]
-                cell.set_cell_value()
-        pass
 
     # Finds an empty cell and returns its row and col as a tuple
     def find_empty(self):
-        board = SudokuGenerator.get_board()
-        for row in range(self.height):
-            for col in range(self.width):
-                cell = board[row][col]
-                if cell == 0:
+        for row in range(9):
+            for col in range(9):
+                if self.board_to_edit[row][col] == 0:
                     return row, col
-        pass
+        return None
 
     # Check whether the Sudoku board is solved correctly.
     def check_board(self):
-        board = SudokuGenerator.get_board()
-        for row in board:
-            for i in range(len(row)):
-                check = row.remove(i)
-                if i in check:
+        for row in range(9):
+            for col in range(9):
+                if self.board_to_edit[row][col] != self.solved_board[row][col]:
                     return False
-        col = []
-        count = 0
-        for row in board:
-            col.append(row[count])
-            check = col.remove(row[count])  # ?
-            for i in col:
-                if i in check:
-                    return False
-            count += 1
+        return True
 
-        pass
+    def generate_bool_list(self):
+        # 0 meaning cant be edited
+        # 1 meaning can be edited
+        bool_list = [[-1 for _ in range(9)] for _ in range(9)]
+        for row in range(9):
+            for col in range(9):
+                if self.board[row][col] != 0:
+                    bool_list[row][col] = 0
+                else:
+                    bool_list[row][col] = 1
+        return bool_list
+
