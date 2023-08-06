@@ -145,10 +145,11 @@ class Board:
         count = 0
         for row in board:
             col.append(row[count])
-            check = col.remove(row[count])      # not correct
-            for i in range(self.width):
+            check = col.remove(row[count]) # ?
+            for i in col:
                 if i in check:
                     return False
+            count += 1
 
 
 
