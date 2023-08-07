@@ -113,7 +113,7 @@ class Board:
     def check_board(self):
         for row in range(9):
             for col in range(9):
-                if self.board_to_edit[row][col] != self.solved_board[row][col]:
+                if str(self.board_to_edit[row][col]) != str(self.solved_board[row][col]):
                     return False
         return True
 
