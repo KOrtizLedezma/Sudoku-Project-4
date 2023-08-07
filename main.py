@@ -96,7 +96,7 @@ def draw_game(difficulty):
     sketch_board = [['0' for _ in range(9)] for _ in range(9)]
 
     if difficulty == 'EASY':
-        sudoku = sudoku_class.generate_sudoku(9, 10)
+        sudoku = sudoku_class.generate_sudoku(9, 30)
         solved_board = sudoku_class.board1
         board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board, sketch_board)
         board1.draw()
@@ -141,8 +141,13 @@ def draw_game(difficulty):
                     if board1.bool_board[col][row] != 0:
                         mark_cell(game_screen, col, row)
                         value = wait_for_key()
-                        board1.sketch_board[col][row] = str(value)
-                        board1.draw()
+                        if value != 0:
+                            board1.sketch_board[col][row] = str(value)
+                            board1.draw()
+                        else:
+                            board1.sketch_board[col][row] = '0'
+                            board1.board_to_edit[col][row] = '0'
+                            board1.draw()
 
                 if button_reset.collidepoint(event.pos):
                     board1.reset_to_original()
@@ -265,6 +270,9 @@ def wait_for_key():
                 waiting = False
             elif event.type == pygame.KEYDOWN and pygame.K_1 <= event.key <= pygame.K_9:
                 num = event.key - pygame.K_0
+                waiting = False
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
+                num = 0
                 waiting = False
 
     return num
