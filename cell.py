@@ -4,8 +4,8 @@ import pygame.font
 class Cell:
 
     # Constructor for the Cell class
-    def __init__(self, value, row, col, screen, is_selected):
-        self.sketch = '0'
+    def __init__(self, value, row, col, screen, is_selected, sketch):
+        self.sketch = sketch
         self.value = value
         self.row = row
         self.col = col

@@ -8,7 +8,7 @@ class Board:
     # Constructor for the Board class.
     # Screen is a window from PyGame.
     # Difficulty is a variable to indicate if the user chose easy, medium, or hard
-    def __init__(self, width, height, screen, difficulty, board, board_to_edit, solved_board):
+    def __init__(self, width, height, screen, difficulty, board, board_to_edit, solved_board, sketch_board):
         self.width = width
         self.height = height
         self.screen = screen
@@ -16,7 +16,7 @@ class Board:
         self.current_selected = None
         self.board = board
         self.bool_board = self.generate_bool_list()
-        self.sketch_board = [[0 for _ in range(9)] for _ in range(9)]
+        self.sketch_board = sketch_board
         self.board_to_edit = board_to_edit
         self.solved_board = solved_board
 
@@ -25,7 +25,7 @@ class Board:
     def draw(self):
         for row in range(9):
             for col in range(9):
-                cell = Cell(str(self.board[row][col]), col + 1, row + 1, self.screen, False)
+                cell = Cell(str(self.board[row][col]), col + 1, row + 1, self.screen, False, self.sketch_board[row][col])
                 cell.draw()
 
         pygame.draw.rect(self.screen, (0, 0, 0),
