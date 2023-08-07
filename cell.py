@@ -46,20 +46,6 @@ class Cell:
         pygame.draw.rect(self.screen, (128, 128, 128),
                          ((self.row * cell_size + 75), (self.col * cell_size) + cell_size - 2, cell_size, 2))
 
-        if self.is_selected:
-            # Left Border
-            pygame.draw.rect(self.screen, (255, 0, 0),
-                             ((self.row * cell_size + 75), (self.col * cell_size), 2, cell_size))
-            # Upper Border
-            pygame.draw.rect(self.screen, (255, 0, 0),
-                             ((self.row * cell_size + 75), (self.col * cell_size), cell_size, 2))
-            # Right Border
-            pygame.draw.rect(self.screen, (255, 0, 0),
-                             ((self.row * cell_size + 75) + cell_size - 2, (self.col * cell_size), 2, cell_size))
-            # Bottom Border
-            pygame.draw.rect(self.screen, (255, 0, 0),
-                             ((self.row * cell_size + 75), (self.col * cell_size) + cell_size - 2, cell_size, 2))
-
         if self.sketch != '0':
             cell_sketch_text = sketch_font.render(self.sketch, True, (168, 168, 168))
             cell_sketch_text_rect = cell_sketch_text.get_rect(center=(
@@ -67,7 +53,14 @@ class Cell:
             self.screen.blit(cell_sketch_text, cell_sketch_text_rect)
 
         if self.value != '0':
-            cell_value_text = font.render(self.value, True, (0, 0, 0))
-            cell_value_text_rect = cell_value_text.get_rect(center=(
-                (self.row * cell_size + 75) + cell_size / 2, (self.col * cell_size) + cell_size / 2))
-            self.screen.blit(cell_value_text, cell_value_text_rect)
+            if self.is_selected == 1:
+                cell_value_text = font.render(self.value, True, (128, 128, 128))
+                cell_value_text_rect = cell_value_text.get_rect(center=(
+                    (self.row * cell_size + 75) + cell_size / 2, (self.col * cell_size) + cell_size / 2))
+                self.screen.blit(cell_value_text, cell_value_text_rect)
+            else:
+                cell_value_text = font.render(self.value, True, (0, 0, 0))
+                cell_value_text_rect = cell_value_text.get_rect(center=(
+                    (self.row * cell_size + 75) + cell_size / 2, (self.col * cell_size) + cell_size / 2))
+                self.screen.blit(cell_value_text, cell_value_text_rect)
+

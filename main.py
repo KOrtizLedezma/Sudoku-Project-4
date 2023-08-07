@@ -94,24 +94,36 @@ def draw_game(difficulty):
     board1 = None
 
     sketch_board = [['0' for _ in range(9)] for _ in range(9)]
+    to_edit = [['0' for _ in range(9)] for _ in range(9)]
 
     if difficulty == 'EASY':
-        sudoku = sudoku_class.generate_sudoku(9, 30)
+        original = sudoku_class.generate_sudoku(9, 30)
+        for i in range(9):
+            for j in range(9):
+                to_edit[i][j] = original[i][j]
+
         solved_board = sudoku_class.board1
-        board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board, sketch_board)
+        board1 = board.Board(800, 800, game_screen, difficulty, original, to_edit, solved_board, sketch_board)
         board1.draw()
     elif difficulty == 'MEDIUM':
-        sudoku = sudoku_class.generate_sudoku(9, 40)
+        original = sudoku_class.generate_sudoku(9, 40)
+        for i in range(9):
+            for j in range(9):
+                to_edit[i][j] = original[i][j]
         solved_board = sudoku_class.board1
-        board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board, sketch_board)
+        board1 = board.Board(800, 800, game_screen, difficulty, original, to_edit, solved_board, sketch_board)
         board1.draw()
     if difficulty == 'HARD':
-        sudoku = sudoku_class.generate_sudoku(9, 50)
+        original = sudoku_class.generate_sudoku(9, 50)
+        for i in range(9):
+            for j in range(9):
+                to_edit[i][j] = original[i][j]
         solved_board = sudoku_class.board1
-        board1 = board.Board(800, 800, game_screen, difficulty, sudoku, sudoku, solved_board, sketch_board)
+        board1 = board.Board(800, 800, game_screen, difficulty, original, to_edit, solved_board, sketch_board)
         board1.draw()
 
     while True:
+
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -139,18 +151,22 @@ def draw_game(difficulty):
                     row, col = board1.select(x, y)
 
                     if board1.bool_board[col][row] != 0:
-                        mark_cell(game_screen, col, row)
+
+                        board1.mark_selected(row, col)
+                        pygame.display.flip()
                         value = wait_for_key()
                         if value != 0:
                             board1.sketch_board[col][row] = str(value)
                             board1.draw()
                         else:
                             board1.sketch_board[col][row] = '0'
-                            board1.board_to_edit[col][row] = '0'
+                            board1.board_to_edit[col][row] = 0
                             board1.draw()
 
                 if button_reset.collidepoint(event.pos):
                     board1.reset_to_original()
+                    board1.draw()
+
                 elif button_restart.collidepoint(event.pos):
                     if __name__ == "__main__":
                         pygame.init()
@@ -228,36 +244,6 @@ def draw_lose(difficulty):
             if event1.type == pygame.MOUSEBUTTONDOWN:
                 draw_game(difficulty)
         pygame.display.update()
-
-
-def mark_cell(screen1, row, col):
-    # Left Border
-    pygame.draw.rect(screen1, (255, 0, 0),
-                     (((row + 1) * 60 + 75), ((col + 1) * 60), 2, 60))
-    # Upper Border
-    pygame.draw.rect(screen1, (255, 0, 0),
-                     (((row + 1) * 60 + 75), ((col + 1) * 60), 60, 2))
-    # Right Border
-    pygame.draw.rect(screen1, (255, 0, 0),
-                     (((row + 1) * 60 + 75) + 60 - 2, ((col + 1) * 60), 2, 60))
-    # Bottom Border
-    pygame.draw.rect(screen1, (255, 0, 0),
-                     (((row + 1) * 60 + 75), ((col + 1) * 60) + 60 - 2, 60, 2))
-
-
-def unmarked_cell(screen1, row, col):
-    # Left Border
-    pygame.draw.rect(screen1, (128, 128, 128),
-                     (((row + 1) * 60 + 75), ((col + 1) * 60), 2, 60))
-    # Upper Border
-    pygame.draw.rect(screen1, (128, 128, 128),
-                     (((row + 1) * 60 + 75), ((col + 1) * 60), 60, 2))
-    # Right Border
-    pygame.draw.rect(screen1, (128, 128, 128),
-                     (((row + 1) * 60 + 75) + 60 - 2, ((col + 1) * 60), 2, 60))
-    # Bottom Border
-    pygame.draw.rect(screen1, (128, 128, 128),
-                     (((row + 1) * 60 + 75), ((col + 1) * 60) + 60 - 2, 60, 2))
 
 
 def wait_for_key():

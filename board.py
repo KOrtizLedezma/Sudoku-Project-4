@@ -25,7 +25,8 @@ class Board:
     def draw(self):
         for row in range(9):
             for col in range(9):
-                cell = Cell(str(self.board[row][col]), col + 1, row + 1, self.screen, False, self.sketch_board[row][col])
+                cell = Cell(str(self.board_to_edit[row][col]), col + 1, row + 1, self.screen, self.bool_board[row][col],
+                            self.sketch_board[row][col])
                 cell.draw()
 
         pygame.draw.rect(self.screen, (0, 0, 0),
@@ -64,8 +65,8 @@ class Board:
         else:
             return None
 
-    def clear(self):
-        row, col = self.select()
+    def clear(self, x, y):
+        row, col = self.select(x, y)
         if self.bool_board[row][col] == 1:
             self.board[row][col] = 0
 
@@ -128,3 +129,18 @@ class Board:
                 else:
                     bool_list[row][col] = 1
         return bool_list
+
+    def mark_selected(self, row, col):
+        # Left Border
+        pygame.draw.rect(self.screen, (255, 0, 0),
+                         (((row + 1) * 60 + 75), ((col + 1) * 60), 2, 60))
+        # Upper Border
+        pygame.draw.rect(self.screen, (255, 0, 0),
+                         (((row + 1) * 60 + 75), ((col + 1) * 60), 60, 2))
+        # Right Border
+        pygame.draw.rect(self.screen, (255, 0, 0),
+                         (((row + 1) * 60 + 75) + 60 - 2, ((col + 1) * 60), 2, 60))
+        # Bottom Border
+        pygame.draw.rect(self.screen, (255, 0, 0),
+                         (((row + 1) * 60 + 75), ((col + 1) * 60) + 60 - 2, 60, 2))
+
