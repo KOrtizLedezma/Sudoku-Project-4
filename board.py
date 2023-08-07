@@ -1,6 +1,5 @@
 import pygame
 from cell import Cell
-from sudoku_generator import SudokuGenerator
 
 
 class Board:
@@ -72,17 +71,17 @@ class Board:
 
     # Sets the sketched value of the current selected cell equal to user-entered value.
     # It will be displayed in the top left corner of the cell using the draw() function.
-    def sketch(self):
-        if self.select() is not None:
-            row, col = self.select()
+    def sketch(self, x, y):
+        if self.select(x, y) is not None:
+            row, col = self.select(x, y)
             sketched_value = input()
             self.sketch_board[row][col] = sketched_value
 
     # Sets the value of the current selected cell equal to the user entered value.
     # Called when the user presses the Enter key.
-    def place_number(self, value):
-        if self.select() is not None:
-            row, col = self.select()
+    def place_number(self, value, x, y):
+        if self.select(x, y) is not None:
+            row, col = self.select(x, y)
             if self.board_to_edit[row][col] == 0:
                 self.board_to_edit[row][col] = value
 
@@ -143,4 +142,3 @@ class Board:
         # Bottom Border
         pygame.draw.rect(self.screen, (255, 0, 0),
                          (((row + 1) * 60 + 75), ((col + 1) * 60) + 60 - 2, 60, 2))
-

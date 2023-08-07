@@ -3,6 +3,7 @@ import random
 
 board1 = [[0 for _ in range(9)] for _ in range(9)]
 
+
 class SudokuGenerator:
     # create a sudoku board - initialize class variables and set up the 2D board
     # This should initialize:
@@ -32,7 +33,8 @@ class SudokuGenerator:
     # Parameters: None
     # Return: None
 
-    def print_board(self): #Prints the board all joined together. 
+    # Prints the board all joined together.
+    def print_board(self):
         for num in range(len(self.board)):
             print(''.join(str(self.board[num])))
 
@@ -75,8 +77,10 @@ class SudokuGenerator:
     # Return: boolean
 
     def valid_in_box(self, row_start, col_start, num):
-        row_start = row_start - (row_start % 3) # Modulus is used in order to get row_start and col_start to the starting indices of the certain boxes. 
-        col_start = col_start - (col_start % 3) # This basically sets any number that isn't 0, 3, or 6 to these numbers within their respective ranges. 
+        # Modulus is used in order to get row_start and col_start to the starting indices of the certain boxes.
+        # This basically sets any number that isn't 0, 3, or 6 to these numbers within their respective ranges.
+        row_start = row_start - (row_start % 3)
+        col_start = col_start - (col_start % 3)
         for row in range(row_start, row_start + 3):
             for col in range(col_start, col_start + 3):
                 if self.board[row][col] == num:
@@ -104,20 +108,24 @@ class SudokuGenerator:
     # Return: None
 
     def fill_box(self, row_start, col_start):
-        num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9] #This list is used in order to serve as another check so items don't repeat within a box. 
+        # This list is used in order to serve as another check so items don't repeat within a box.
+        num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         for row in range(row_start, row_start + 3):
             for cell in range(col_start, col_start + 3):
                 random_num = random.choice(num_list)
                 self.board[row][cell] = random_num
-                num_list.remove(random_num) #Basically removes the number out of the list so it isn't able to be chosen again.
+                # Basically removes the number out of the list, so it isn't able to be chosen again.
+                num_list.remove(random_num)
 
-    # Fills the three boxes along the main diagonal of the board.
+                # Fills the three boxes along the main diagonal of the board.
+
     # These are the boxes which start at (0,0), (3,3), and (6,6)
     # Parameters: None
     # Return: None
 
     def fill_diagonal(self):
-        for diagonal in range(0, 6 + 1, 3): #The range will basically alwasy step by 3 and stop at 7 so it accounts for the starting point (6,6).
+        # The range will basically always step by 3 and stop at 7, so it accounts for the starting point (6,6).
+        for diagonal in range(0, 6 + 1, 3):
             self.fill_box(diagonal, diagonal)
 
     # DO NOT CHANGE
@@ -176,8 +184,10 @@ class SudokuGenerator:
     # Return: None
 
     def remove_cells(self):
-        successful_attempts = 0 #Takes into account the number of successful attempts to remove a number. 
-        for row in range(0, 5000): #The range is so high so it accounts for the times it turns a number into 0 more than once. 
+        # Takes into account the number of successful attempts to remove a number.
+        successful_attempts = 0
+        # The range is so high, so it accounts for the times it turns a number into 0 more than once.
+        for row in range(0, 5000):
             random_num1 = random.randint(0, 8)
             random_num2 = random.randint(0, 8)
             if successful_attempts < self.removed_cells:
@@ -186,7 +196,8 @@ class SudokuGenerator:
                     successful_attempts += 1
                 elif self.board[random_num1][random_num2] == 0:
                     pass
-            elif successful_attempts == self.removed_cells: #When successful attempts reaches the amount of desired cells that are to be removed, it breaks. 
+            # When successful attempts reach the number of desired cells that are to be removed, it breaks.
+            elif successful_attempts == self.removed_cells:
                 break
 
             # DO NOT CHANGE
@@ -209,10 +220,8 @@ def generate_sudoku(size, removed):
     sudoku.fill_values()
     board = sudoku.get_board()
 
-    rows = len(board)
-    cols = len(board[0])
-    for i in range(rows):
-        for j in range(cols):
+    for i in range(len(board)):
+        for j in range(len(board[0])):
             board1[i][j] = board[i][j]
 
     sudoku.remove_cells()
