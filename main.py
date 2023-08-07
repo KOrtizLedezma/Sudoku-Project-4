@@ -210,6 +210,40 @@ def draw_game(difficulty):
         pygame.display.update()
 
 
+# Draws the Losing screen
+# It's going to deal with the click on the only button on the screen
+def draw_lose(difficulty):
+    pygame.init()
+    lose_screen = pygame.display.set_mode((800, 800))
+    pygame.display.set_caption('Sudoku')
+
+    background = pygame.image.load('Media/background.png')
+    screen.blit(background, (0, 0))
+
+    title_font = pygame.font.Font(None, 130)
+
+    title_text = title_font.render("Game Over :(", True, (0, 0, 0))
+    title_rectangle = title_text.get_rect(center=(400, 250))
+    lose_screen.blit(title_text, title_rectangle)
+
+    orange = (255, 79, 0)
+    font = pygame.font.Font(None, 40)
+
+    button_restart = pygame.Rect(300, 500, 200, 50)
+    pygame.draw.rect(lose_screen, orange, button_restart)
+    button_restart_text = font.render('RESTART', True, (245, 245, 245))
+    text_restart = button_restart_text.get_rect(center=button_restart.center)
+    lose_screen.blit(button_restart_text, text_restart)
+
+    while True:
+        for event1 in pygame.event.get():
+            if event1.type == pygame.QUIT:
+                sys.exit()
+            if event1.type == pygame.MOUSEBUTTONDOWN:
+                draw_game(difficulty)
+        pygame.display.update()
+
+
 # Draws the Winning screen
 # It's going to deal with the click on the only button on the screen
 def draw_win():
@@ -242,40 +276,6 @@ def draw_win():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_exit.collidepoint(event.pos):
                     sys.exit()
-        pygame.display.update()
-
-
-# Draws the Losing screen
-# It's going to deal with the click on the only button on the screen
-def draw_lose(difficulty):
-    pygame.init()
-    lose_screen = pygame.display.set_mode((800, 800))
-    pygame.display.set_caption('Sudoku')
-
-    background = pygame.image.load('Media/background.png')
-    screen.blit(background, (0, 0))
-
-    title_font = pygame.font.Font(None, 130)
-
-    title_text = title_font.render("Game Over :(", True, (0, 0, 0))
-    title_rectangle = title_text.get_rect(center=(400, 250))
-    lose_screen.blit(title_text, title_rectangle)
-
-    orange = (255, 79, 0)
-    font = pygame.font.Font(None, 40)
-
-    button_restart = pygame.Rect(300, 500, 200, 50)
-    pygame.draw.rect(lose_screen, orange, button_restart)
-    button_restart_text = font.render('RESTART', True, (245, 245, 245))
-    text_restart = button_restart_text.get_rect(center=button_restart.center)
-    lose_screen.blit(button_restart_text, text_restart)
-
-    while True:
-        for event1 in pygame.event.get():
-            if event1.type == pygame.QUIT:
-                sys.exit()
-            if event1.type == pygame.MOUSEBUTTONDOWN:
-                draw_game(difficulty)
         pygame.display.update()
 
 
